@@ -1,13 +1,14 @@
 package com.wallfacerrzd.blog.controller;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import com.wallfacerrzd.blog.domain.Article;
+import com.wallfacerrzd.blog.service.ArticleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.*;
-import java.util.Scanner;
+import java.util.List;
 
 /**
  * @author
@@ -15,28 +16,26 @@ import java.util.Scanner;
  */
 @RestController
 public class PageController {
+    private ArticleService articleService;
+
+    @Autowired
+    public PageController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
+
     @RequestMapping("/index")
     public ModelAndView index() {
-        return new ModelAndView("index");
+        List<Article> articles = articleService.getAllArticles();
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("articles", articles);
+        return modelAndView;
     }
 
-    @RequestMapping("/md2html")
-    public ModelAndView md2html() {
-        return new ModelAndView("md2html");
-    }
-
-    @RequestMapping("/getmd")
-    public String getMd() {
-        Resource resource = new ClassPathResource("test.md");
-        StringBuilder content = new StringBuilder();
-        try(Scanner scanner = new Scanner(
-                new InputStreamReader(resource.getInputStream(), "utf-8"))) {
-            while (scanner.hasNext()) {
-                content.append(scanner.nextLine()).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return content.toString();
+    @RequestMapping("/article/{id}")
+    public ModelAndView article(@PathVariable("id") String id) {
+        String content = articleService.getArticleContent(Integer.parseInt(id));
+        ModelAndView modelAndView = new ModelAndView("article");
+        modelAndView.addObject("content", content);
+        return modelAndView;
     }
 }

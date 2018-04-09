@@ -1,5 +1,6 @@
 spring:
-  mvc:
-    view:
-      suffix: .html
-      prefix: /webapp/pages/
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/blog?useSSL=true
+    username: root
+    password: 85607505rzd?
