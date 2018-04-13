@@ -14,9 +14,11 @@ import org.springframework.stereotype.Component;
 @Mapper
 @Component(value = "UserMapper")
 public interface UserMapper {
-    @Select("SELECT * FROM admin where id = #{id}")
-    User selectUser(int id);
+    @Select("SELECT * FROM user where userName = #{userName} and password = #{password}")
+    User selectUser(@Param("userName")String userName, @Param("password")String password);
 
-    @Insert("INSERT INTO admin (userName, password) VALUES (#{userName}, #{password})")
-    void insertUser(@Param("userName")String userName, @Param("password")String password);
+    @Insert("INSERT INTO user (userName, password, isAdmin) VALUES (#{userName}, #{password}, #{isAdmin})")
+    void insertUser(@Param("userName") String userName, @Param("password") String password, @Param("isAdmin") boolean isAdmin);
+
+
 }

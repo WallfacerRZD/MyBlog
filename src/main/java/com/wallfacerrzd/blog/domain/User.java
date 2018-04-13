@@ -22,12 +22,24 @@ public class User {
         this.password = password;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
     private String userName;
 
     private String password;
 
+    private boolean isAdmin;
+
+
+
     @Override
     public String toString() {
-        return userName + " " + password;
+        return userName + " " + password + " " + isAdmin;
     }
 }

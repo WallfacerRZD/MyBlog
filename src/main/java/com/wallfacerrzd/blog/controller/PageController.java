@@ -5,6 +5,7 @@ import com.wallfacerrzd.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,11 +32,21 @@ public class PageController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView login() {
+        return new ModelAndView("login");
+    }
+
     @RequestMapping("/article/{id}")
     public ModelAndView article(@PathVariable("id") String id) {
         String content = articleService.getArticleContent(Integer.parseInt(id));
         ModelAndView modelAndView = new ModelAndView("article");
         modelAndView.addObject("content", content);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/uploadForm", method = RequestMethod.GET)
+    public ModelAndView uploadForm() {
+        return new ModelAndView("uploadForm");
     }
 }

@@ -18,11 +18,11 @@ public class UserDao {
         this.userMapper = userMapper;
     }
 
-    public User selectUserById(int id) {
-        return userMapper.selectUser(id);
+    public User selectUser(String userName, String password) {
+        return userMapper.selectUser(userName, password);
     }
 
-    public void insertUser(String userName, String password) {
-        userMapper.insertUser(userName, password);
+    public void insertUser(String userName, String password, boolean isAdmin) {
+        userMapper.insertUser(userName, password, isAdmin);
     }
 }
