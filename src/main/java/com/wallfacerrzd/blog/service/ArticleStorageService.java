@@ -1,6 +1,7 @@
 package com.wallfacerrzd.blog.service;
 
 import com.wallfacerrzd.blog.dao.ArticleDao;
+import com.wallfacerrzd.blog.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,23 +17,29 @@ import java.sql.Timestamp;
 @Service
 public class ArticleStorageService {
     private final ArticleDao articleDao;
+    private final Configuration configuration;
 
     @Autowired
-    public ArticleStorageService(ArticleDao articleDao) {
+    public ArticleStorageService(ArticleDao articleDao, Configuration configuration) {
+        this.configuration = configuration;
         this.articleDao = articleDao;
     }
 
-    public void store(MultipartFile file, String fileName) {
+    public void store(MultipartFile multipartFile, String fileName, String fileType) {
         // 保存文件
-        String articleDirectory = "F:/_projects/blog/src/main/resources/articles/";
+        File file = new File(configuration.getArticlePath() + fileName + ".md");
+        System.out.println("---------------");
+        System.out.println(file.getAbsolutePath());
+        System.out.println("---------------");
         try {
-            file.transferTo(new File(articleDirectory + fileName + ".md"));
+            multipartFile.transferTo(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
         // 将文件路径插入数据库
         articleDao.insert(fileName,
-                String.format("articles/%s.md", fileName),
+                file.getAbsolutePath(),
+                fileType,
                 new Timestamp(System.currentTimeMillis()));
     }
 

@@ -4,3 +4,6 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/blog?useSSL=true
     username: root
     password: 85607505rzd?
+
+com.wallfacerrzd.blog.articlepath: F:/_projects/blog/target/classes/articles/
+

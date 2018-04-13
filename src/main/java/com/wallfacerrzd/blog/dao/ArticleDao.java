@@ -22,15 +22,19 @@ public class ArticleDao {
         this.articleMapper = articleMapper;
     }
 
-    public List<Article> selectAll() {
-        return articleMapper.selectAll();
+    public List<Article> selectAllNodes() {
+        return articleMapper.selectAllNodes();
+    }
+
+    public List<Article> selectAllEssays() {
+        return articleMapper.selectAllEssays();
     }
 
     public Optional<Article> selectById(int id) {
         return Optional.ofNullable(articleMapper.selectById(id));
     }
 
-    public void insert(String name, String path, Timestamp time) {
-        articleMapper.insert(name, path, time);
+    public void insert(String name, String path, String fileType, Timestamp time) {
+        articleMapper.insert(name, path, fileType, time);
     }
 }

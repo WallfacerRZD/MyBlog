@@ -24,8 +24,9 @@ public class FileUploadController {
 
     @PostMapping("/articles")
     public ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file,
-                                         @RequestParam("fileName")String fileName) {
-        articleStorageService.store(file, fileName);
+                                         @RequestParam("fileName") String fileName,
+                                         @RequestParam("fileType") String fileType) {
+        articleStorageService.store(file, fileName, fileType);
         return new ModelAndView("redirect:/index");
     }
 }

@@ -19,11 +19,6 @@ public class UserDaoTest {
     UserDao userDao;
 
     @Test
-    public void selectUser() {
-        System.out.println(userDao.selectUser("rzd", "123"));
-    }
-
-    @Test
     public void selectUser1() {
     }
 

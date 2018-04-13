@@ -1,6 +1,7 @@
 package com.wallfacerrzd.blog.utils;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.*;
@@ -17,7 +18,7 @@ public final class Utils {
     }
 
     public static String markdown2Html(String mdPath) {
-        Resource resource = new ClassPathResource(mdPath);
+        Resource resource = new PathResource(mdPath);
         StringBuilder content = new StringBuilder();
         try (Scanner scanner = new Scanner(resource.getInputStream(), "utf-8")) {
             while (scanner.hasNext()) {

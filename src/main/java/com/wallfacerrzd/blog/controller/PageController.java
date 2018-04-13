@@ -26,9 +26,17 @@ public class PageController {
 
     @RequestMapping("/index")
     public ModelAndView index() {
-        List<Article> articles = articleService.getAllArticles();
+        List<Article> nodes = articleService.getAllNodes();
         ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("articles", articles);
+        modelAndView.addObject("articles", nodes);
+        return modelAndView;
+    }
+
+    @RequestMapping("/essay")
+    public ModelAndView essay() {
+        List<Article> essays = articleService.getAllEssays();
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("articles", essays);
         return modelAndView;
     }
 

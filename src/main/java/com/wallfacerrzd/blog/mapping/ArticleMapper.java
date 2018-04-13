@@ -17,13 +17,16 @@ import java.util.List;
 @Mapper
 @Component(value = "ArticleMapper")
 public interface ArticleMapper {
-    @Select("SELECT * FROM article")
-    List<Article> selectAll();
+    @Select("SELECT * FROM article where type = 'node'")
+    List<Article> selectAllNodes();
+
+    @Select("SELECT * FROM article where type = 'essay'")
+    List<Article> selectAllEssays();
 
     @Select("SELECT * FROM article WHERE id = #{id}")
     Article selectById(@Param("id")int id);
 
-    @Insert("INSERT INTO article (name, path, time) " +
-            "VALUES (#{name}, #{path}, #{time})")
-    void insert(@Param("name") String name, @Param("path") String path, @Param("time") Timestamp time);
+    @Insert("INSERT INTO article (name, path, time, type) " +
+            "VALUES (#{name}, #{path}, #{time}, #{fileType})")
+    void insert(@Param("name") String name, @Param("path") String path, @Param("fileType")String fileType, @Param("time") Timestamp time);
 }

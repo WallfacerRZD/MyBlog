@@ -1,16 +1,30 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>上传文件</title>
+</head>
 <body>
-
-
 <div>
     <form method="POST" enctype="multipart/form-data" action="/articles">
         <table>
             <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
             <tr><td>FileName</td><td><input type="text" name="fileName"></td></tr>
+            <tr>
+                <td>ArticleType</td>
+                <td>
+                    <select name="fileType">
+                        <option value="node">笔记</option>
+                        <option value="essay">随笔</option>
+                    </select>
+                </td>
+            </tr>
             <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
         </table>
     </form>
 </div>
-
 </body>
 </html>
