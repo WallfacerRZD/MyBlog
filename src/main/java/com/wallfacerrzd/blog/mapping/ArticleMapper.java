@@ -17,10 +17,10 @@ import java.util.List;
 @Mapper
 @Component(value = "ArticleMapper")
 public interface ArticleMapper {
-    @Select("SELECT * FROM article where type = 'node'")
+    @Select("SELECT * FROM article where type = 'node' ORDER BY id desc")
     List<Article> selectAllNodes();
 
-    @Select("SELECT * FROM article where type = 'essay'")
+    @Select("SELECT * FROM article where type = 'essay' ORDER BY id desc")
     List<Article> selectAllEssays();
 
     @Select("SELECT * FROM article WHERE id = #{id}")

@@ -48,9 +48,13 @@ public class PageController {
     @RequestMapping("/article/{id}")
     public ModelAndView article(@PathVariable("id") String id) {
         String content = articleService.getArticleContent(Integer.parseInt(id));
-        ModelAndView modelAndView = new ModelAndView("article");
-        modelAndView.addObject("content", content);
-        return modelAndView;
+        if ("".equals(content)) {
+            return new ModelAndView("redirect:/index");
+        } else {
+            ModelAndView modelAndView = new ModelAndView("article");
+            modelAndView.addObject("content", content);
+            return modelAndView;
+        }
     }
 
     @RequestMapping(value = "/uploadForm", method = RequestMethod.GET)
