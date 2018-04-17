@@ -22,8 +22,8 @@ public class ArticleService {
         this.articleDao = articleDao;
     }
 
-    public List<Article> getAllNodes() {
-        return articleDao.selectAllNodes();
+    public List<Article> getAllNotes() {
+        return articleDao.selectAllNotes();
     }
 
     public List<Article> getAllEssays() {

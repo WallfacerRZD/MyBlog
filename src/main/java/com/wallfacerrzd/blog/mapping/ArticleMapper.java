@@ -18,7 +18,7 @@ import java.util.List;
 @Component(value = "ArticleMapper")
 public interface ArticleMapper {
     @Select("SELECT * FROM article where type = 'node' ORDER BY id desc")
-    List<Article> selectAllNodes();
+    List<Article> selectAllNotes();
 
     @Select("SELECT * FROM article where type = 'essay' ORDER BY id desc")
     List<Article> selectAllEssays();

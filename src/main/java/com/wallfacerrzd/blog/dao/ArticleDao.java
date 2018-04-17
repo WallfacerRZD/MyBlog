@@ -22,8 +22,8 @@ public class ArticleDao {
         this.articleMapper = articleMapper;
     }
 
-    public List<Article> selectAllNodes() {
-        return articleMapper.selectAllNodes();
+    public List<Article> selectAllNotes() {
+        return articleMapper.selectAllNotes();
     }
 
     public List<Article> selectAllEssays() {
