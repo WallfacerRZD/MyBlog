@@ -4,7 +4,7 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
-<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/github-markdown.css">
 <!--<![endif]-->
 
 <head>
@@ -31,7 +31,7 @@
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400' rel='stylesheet' type='text/css'>
+    <!--<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700|Roboto:300,400' rel='stylesheet' type='text/css'>-->
 
     <!-- Animate.css -->
     <link rel="stylesheet" href="/css/animate.css">
@@ -90,7 +90,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="animate-box fadeInUp animated">
-                        <div class="github-markdown"></div>
+                        <div v-html="content" id="article" class="github-markdown"></div>
                     </div>
                 </div>
             </div>
@@ -127,11 +127,34 @@
 <!-- Main JS (Do not remove) -->
 <script src="/js/main.js"></script>
 
-<script th:inline="javascript">
-        var md = window.markdownit();
-        var md_content = /*[[${content}]]*/;
-        var html_content = md.render(md_content);
-        $(".github-markdown").html(html_content);
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+        var articlePath = window.location.pathname;
+        var articleURL = "/" + articlePath.split("/")[1];
+        var articleId = articlePath.split("/")[2];
+        console.log(articleId);
+        console.log(articleURL);
+        var app = new Vue({
+            el: "#article",
+            data: {
+                content: ""
+            },
+            created: function () {
+                var _self = this;
+                $.ajax({
+                    type: "POST",
+                    url: articleURL,
+                    data: {
+                        articleId: articleId
+                    },
+                    success: function (data) {
+                        var md = window.markdownit();
+                        _self.content = md.render(data);
+                    }
+                })
+            }
+        });
 </script>
 </body>
 
