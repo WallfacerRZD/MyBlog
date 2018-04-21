@@ -38,4 +38,13 @@ public final class Utils {
         }
         return content.toString();
     }
+
+    public static int parseInteger(String id) {
+        try {
+            return Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            // 如果id不是数字, 返回数据库中不会出现的0作为错误返回值.
+            return 0;
+        }
+    }
 }
