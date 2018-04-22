@@ -1,5 +1,6 @@
 package com.wallfacerrzd.blog.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.wallfacerrzd.blog.domain.Article;
 import com.wallfacerrzd.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,18 @@ public class PageController {
 
     @RequestMapping("/index")
     public ModelAndView index() {
-        return new ModelAndView("index");
+        List<Article> notes = articleService.getAllNotes();
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("notes", notes);
+        return modelAndView;
     }
 
     @RequestMapping("/essay")
     public ModelAndView essay() {
-        return new ModelAndView("essay");
+        List<Article> notes = articleService.getAllEssays();
+        ModelAndView modelAndView = new ModelAndView("essay");
+        modelAndView.addObject("essays", notes);
+        return modelAndView;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
