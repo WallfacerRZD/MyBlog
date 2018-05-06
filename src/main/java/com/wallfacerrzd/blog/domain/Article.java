@@ -2,6 +2,7 @@ package com.wallfacerrzd.blog.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -33,11 +34,11 @@ public class Article {
         this.id = id;
     }
 
-    public Timestamp getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
@@ -50,5 +51,5 @@ public class Article {
     private String path;
     private int id;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Timestamp time;
+    private Date time;
 }

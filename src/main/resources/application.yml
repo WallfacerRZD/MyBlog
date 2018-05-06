@@ -5,5 +5,5 @@ spring:
     username: root
     password: 85607505rzd?
 
-com.wallfacerrzd.blog.articlepath: F:/_projects/blog/target/classes/articles/
+com.wallfacerrzd.blog.articlepath: F:/_projects/blog/articles/
 
