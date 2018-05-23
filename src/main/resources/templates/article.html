@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
 <link rel="stylesheet" href="/css/github-markdown.css">
@@ -12,22 +15,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>我的似水流年</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Free HTML5 Template by FREEHTML5" />
-    <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
-
-
+    <meta name="description" content="Free HTML5 Template by FREEHTML5"/>
+    <meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive"/>
 
 
     <!-- Facebook and Twitter integration -->
-    <meta property="og:title" content="" />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:site_name" content="" />
-    <meta property="og:description" content="" />
-    <meta name="twitter:title" content="" />
-    <meta name="twitter:image" content="" />
-    <meta name="twitter:url" content="" />
-    <meta name="twitter:card" content="" />
+    <meta property="og:title" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content=""/>
+    <meta property="og:site_name" content=""/>
+    <meta property="og:description" content=""/>
+    <meta name="twitter:title" content=""/>
+    <meta name="twitter:image" content=""/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:card" content=""/>
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -74,7 +75,8 @@
                         <ul class="social">
                             <li>
                                 <a href="https://github.com/WallfacerRZD">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
+                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                         viewBox="0 0 512 512">
                                         <title></title>
                                         <g id="icomoon-ignore">
                                         </g>
@@ -96,6 +98,53 @@
                 <div class="col-md-8 col-md-offset-2">
                     <div class="animate-box fadeInUp animated">
                         <div v-html="content" id="article" class="github-markdown"></div>
+                        <div id="comment-list">
+                            <textarea id="input" placeholder="说点什么吧"></textarea>
+                            <button class="btn btn-primary btn-lg" type="button" onclick="sendComment()">评论</button>
+
+                            <div v-if="comments.length != 0" id="comments" class="container-fluid">
+                                <div v-for="comment in comments" class="comment-wap">
+                                    <hr>
+                                    <div class="comment row">
+                                        <div class="user-info col-md-2 col-xs-3">
+                                            <div class="author">
+                                                <div class="user-icon">
+                                                    <img class="img-responsive" src="/images/user-icon.jpg">
+                                                </div>
+                                                <div class="user-name">
+                                                    <p>{{ comment.user }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="comment-content col-md-10 col-xs-9">
+                                            <p>{{ comment.content }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class="container-fluid">
+                                <div class="comment-wap">
+                                    <hr>
+                                    <div class="comment row">
+                                        <div class="user-info col-md-2 col-xs-3">
+                                            <div class="author">
+                                                <div class="user-icon">
+                                                    <img class="img-responsive" src="/images/user-icon.jpg">
+                                                </div>
+                                                <div class="user-name">
+                                                    <p>东老师</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="comment-content col-md-10 col-xs-9">
+                                            <p>无人评论, 来抢个沙发吧</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,29 +183,68 @@
 
 <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
 <script>
-        var articlePath = window.location.pathname;
-        var articleURL = "/" + articlePath.split("/")[1];
-        var articleId = articlePath.split("/")[2];
-        var app = new Vue({
-            el: "#article",
+    var comment = "/comment";
+    var articlePath = window.location.pathname;
+    var articleURL = "/" + articlePath.split("/")[1];
+    var articleId = articlePath.split("/")[2];
+
+    var articleApp = new Vue({
+        el: "#article",
+        data: {
+            content: ""
+        },
+        created: function () {
+            var _self = this;
+            $.ajax({
+                type: "POST",
+                url: articleURL,
+                data: {
+                    articleId: articleId
+                },
+                success: function (data) {
+                    var md = window.markdownit();
+                    _self.content = md.render(data);
+                }
+            })
+        }
+    });
+
+    var commentApp = new Vue({
+        el: "#comment-list",
+        data: {
+            comments: []
+        },
+        created: function () {
+            var _self = this;
+            $.ajax({
+                type: "GET",
+                url: comment + "/" + articleId,
+                success: function (data) {
+                    _self.comments = data;
+                }
+            })
+        }
+    });
+
+    function sendComment() {
+        var text = $("#input").val();
+        $.ajax({
+            type: "POST",
+            url: "/comment",
             data: {
-                content: ""
+                articleId: articleId,
+                content: text,
+                user: "anonymousUser"
             },
-            created: function () {
-                var _self = this;
-                $.ajax({
-                    type: "POST",
-                    url: articleURL,
-                    data: {
-                        articleId: articleId
-                    },
-                    success: function (data) {
-                        var md = window.markdownit();
-                        _self.content = md.render(data);
-                    }
-                })
+            success: function () {
+                alert("评论成功!");
+                location.reload();
+            },
+            error: function () {
+                alert("评论失败!")
             }
-        });
+        })
+    }
 </script>
 </body>
 
