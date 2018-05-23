@@ -109,7 +109,7 @@
                                         <div class="user-info col-md-2 col-xs-3">
                                             <div class="author">
                                                 <div class="user-icon">
-                                                    <img class="img-responsive" src="/images/user-icon.jpg">
+                                                    <img alt="头像" class="img-responsive" src="/images/user-icon.jpg">
                                                 </div>
                                                 <div class="user-name">
                                                     <p>{{ comment.user }}</p>
@@ -130,7 +130,7 @@
                                         <div class="user-info col-md-2 col-xs-3">
                                             <div class="author">
                                                 <div class="user-icon">
-                                                    <img class="img-responsive" src="/images/user-icon.jpg">
+                                                    <img alt="头像" class="img-responsive" src="/images/user-icon.jpg">
                                                 </div>
                                                 <div class="user-name">
                                                     <p>东老师</p>
@@ -204,6 +204,7 @@
                 success: function (data) {
                     var md = window.markdownit();
                     _self.content = md.render(data);
+                    commentApp.getComment();
                 }
             })
         }
@@ -214,15 +215,17 @@
         data: {
             comments: []
         },
-        created: function () {
-            var _self = this;
-            $.ajax({
-                type: "GET",
-                url: comment + "/" + articleId,
-                success: function (data) {
-                    _self.comments = data;
-                }
-            })
+        methods: {
+            getComment: function () {
+                var _self = this;
+                $.ajax({
+                    type: "GET",
+                    url: comment + "/" + articleId,
+                    success: function (data) {
+                        _self.comments = data;
+                    }
+                })
+            }
         }
     });
 
