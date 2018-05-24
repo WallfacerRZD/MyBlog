@@ -99,7 +99,7 @@
                     <div class="animate-box fadeInUp animated">
                         <div id="article" class="github-markdown"></div>
                         <div id="comment-list">
-                            <textarea id="input" placeholder="说点什么吧"></textarea>
+                            <div><textarea id="input" placeholder="说点什么吧"></textarea></div>
                             <button class="btn btn-primary btn-lg" type="button" onclick="sendComment()">评论</button>
 
                             <div th:if="${!#lists.isEmpty(comments)}" id="comments" class="container-fluid">
@@ -189,6 +189,7 @@
     $(document).ready(function () {
         var md = window.markdownit();
         $("#article").html(md.render(/*[[${articleContent}]]*/));
+        $("#article img").addClass("img-responsive");
     });
 
     function sendComment() {
