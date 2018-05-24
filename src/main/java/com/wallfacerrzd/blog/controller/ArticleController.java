@@ -1,7 +1,9 @@
 package com.wallfacerrzd.blog.controller;
 
 import com.wallfacerrzd.blog.domain.Article;
+import com.wallfacerrzd.blog.domain.Comment;
 import com.wallfacerrzd.blog.service.ArticleService;
+import com.wallfacerrzd.blog.service.CommentService;
 import com.wallfacerrzd.blog.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,11 @@ import java.util.List;
 @RestController
 public class ArticleController {
     private ArticleService articleService;
+    private CommentService commentService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CommentService commentService) {
+        this.commentService = commentService;
         this.articleService = articleService;
     }
 
@@ -33,8 +37,11 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{id}")
-    public ModelAndView article() {
-        return new ModelAndView("article");
+    public ModelAndView article(@PathVariable("id")int id) {
+        ModelAndView modelAndView = new ModelAndView("article");
+        modelAndView.addObject("comments", commentService.getAllComments(id));
+        modelAndView.addObject("articleContent", articleService.getArticleContent(id));
+        return modelAndView;
     }
 
     @PostMapping("/article")

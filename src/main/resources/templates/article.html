@@ -6,7 +6,7 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js">
+<html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="/css/github-markdown.css">
 <!--<![endif]-->
 
@@ -97,13 +97,13 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
                     <div class="animate-box fadeInUp animated">
-                        <div v-html="content" id="article" class="github-markdown"></div>
+                        <div id="article" class="github-markdown"></div>
                         <div id="comment-list">
                             <textarea id="input" placeholder="说点什么吧"></textarea>
                             <button class="btn btn-primary btn-lg" type="button" onclick="sendComment()">评论</button>
 
-                            <div v-if="comments.length != 0" id="comments" class="container-fluid">
-                                <div v-for="comment in comments" class="comment-wap">
+                            <div th:if="${!#lists.isEmpty(comments)}" id="comments" class="container-fluid">
+                                <div th:each="comment:${comments}" class="comment-wap">
                                     <hr>
                                     <div class="comment row">
                                         <div class="user-info col-md-2 col-xs-3">
@@ -112,18 +112,18 @@
                                                     <img alt="头像" class="img-responsive" src="/images/user-icon.jpg">
                                                 </div>
                                                 <div class="user-name">
-                                                    <p>{{ comment.user }}</p>
+                                                    <p th:text="${comment.user}"></p>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="comment-content col-md-10 col-xs-9">
-                                            <p>{{ comment.content }}</p>
+                                            <p th:text="${comment.content}"></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div v-else class="container-fluid">
+                            <div th:if="${#lists.isEmpty(comments)}" class="container-fluid">
                                 <div class="comment-wap">
                                     <hr>
                                     <div class="comment row">
@@ -182,51 +182,13 @@
 <script src="/js/main.js"></script>
 
 <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
-<script>
-    var comment = "/comment";
+<script th:inline="javascript">
     var articlePath = window.location.pathname;
-    var articleURL = "/" + articlePath.split("/")[1];
     var articleId = articlePath.split("/")[2];
 
-    var articleApp = new Vue({
-        el: "#article",
-        data: {
-            content: ""
-        },
-        created: function () {
-            var _self = this;
-            $.ajax({
-                type: "POST",
-                url: articleURL,
-                data: {
-                    articleId: articleId
-                },
-                success: function (data) {
-                    var md = window.markdownit();
-                    _self.content = md.render(data);
-                    commentApp.getComment();
-                }
-            })
-        }
-    });
-
-    var commentApp = new Vue({
-        el: "#comment-list",
-        data: {
-            comments: []
-        },
-        methods: {
-            getComment: function () {
-                var _self = this;
-                $.ajax({
-                    type: "GET",
-                    url: comment + "/" + articleId,
-                    success: function (data) {
-                        _self.comments = data;
-                    }
-                })
-            }
-        }
+    $(document).ready(function () {
+        var md = window.markdownit();
+        $("#article").html(md.render(/*[[${articleContent}]]*/));
     });
 
     function sendComment() {
