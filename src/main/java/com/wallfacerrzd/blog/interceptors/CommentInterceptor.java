@@ -40,7 +40,7 @@ public class CommentInterceptor extends HandlerInterceptorAdapter {
             return true;
         } else {
             try {
-                response.sendError(403, "评论太快了");
+                response.sendError(403, "评论太快了,去找东老师私聊吧!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
