@@ -50,4 +50,6 @@ hs_err_pid*
 # my aritcles
 src/main/resources/articles/
 
+articles/
+
 src/main/resources/static/images/
